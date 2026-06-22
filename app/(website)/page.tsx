@@ -1,0 +1,84 @@
+import React from 'react';
+import Link from 'next/link';
+import { Hero } from '@/components/website/Hero';
+import { AboutPreview } from '@/components/website/AboutPreview';
+import { ServiceCard } from '@/components/website/ServiceCard';
+import { ProjectCard } from '@/components/website/ProjectCard';
+import { OurSectors } from '@/components/website/OurSectors';
+import { Awards } from '@/components/website/Awards';
+import { OurImages } from '@/components/website/OurImages';
+import { Button } from '@/components/ui/Button';
+import { db } from '@/lib/db';
+import { ArrowRight } from 'lucide-react';
+import { ProjectsCarousel } from '@/components/website/ProjectsCarousel';
+
+// Force dynamic since we fetch from DB
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const rawFeaturedProjects = await db.projects.findMany({
+    where: { featured: true },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  });
+
+  const featuredProjects = rawFeaturedProjects.map(p => ({
+    ...p,
+    images: (typeof p.images === 'string' && p.images.startsWith('[')) ? JSON.parse(p.images) : (p.images ? [p.images] : [])
+  }));
+
+  // Fetch gallery images from DB
+  const galleryItems = await db.gallery_items.findMany({
+    orderBy: { order: 'asc' },
+    take: 12,
+  });
+
+  return (
+    <>
+      <Hero />
+      <AboutPreview />
+
+      {/* Services Section removed as per user request */}
+
+      {/* Featured Projects Section */}
+      <section className="py-8 md:py-10 bg-[#0e0420] overflow-hidden relative">
+        <div className="container mx-auto px-4 xl:max-w-[1280px]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
+            <div className="max-w-3xl">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[44px] font-display font-extrabold text-white mb-4 leading-tight">
+                Landmarks That Define Excellence
+              </h2>
+              <p className="text-slate-300 text-[17px] leading-relaxed">
+                Explore a selection of our landmark projects that reflect our commitment to quality, innovation, and timely delivery.
+              </p>
+            </div>
+            <div className="hidden md:block shrink-0">
+              <Link href="/projects">
+                <Button size="lg" className="rounded-none bg-[#0a42a8] hover:bg-[#083587] text-white px-8 py-6 h-auto text-base font-medium">
+                  View All Projects <ArrowRight size={18} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <ProjectsCarousel projects={featuredProjects} />
+
+            {/* Mobile View All Projects Button */}
+            <div className="mt-8 md:hidden flex justify-center w-full">
+              <Link href="/projects" className="w-full">
+                <Button size="lg" className="w-full rounded-none bg-[#0a42a8] hover:bg-[#083587] text-white px-8 h-12 text-[14px] font-medium">
+                  View All Projects <ArrowRight size={16} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <OurSectors />
+      <Awards />
+      <OurImages items={galleryItems} />
+    </>
+  );
+}

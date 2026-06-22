@@ -1,0 +1,80 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+import { getAuthAdmin } from '@/lib/auth';
+import { promises as fs } from 'fs';
+import path from 'path';
+
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    const service = await db.services.findUnique({
+      where: { id }
+    });
+
+    if (!service) {
+      return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, data: service });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const authData = getAuthAdmin(req);
+    if (!authData) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const formData = await req.formData();
+    
+    const updateData: any = {};
+    const stringFields = ['title', 'slug', 'description', 'shortDesc', 'icon'];
+    
+    stringFields.forEach(field => {
+      const val = formData.get(field);
+      if (val !== null) updateData[field] = val as string;
+    });
+
+    if (formData.has('order')) {
+      updateData.order = parseInt(formData.get('order') as string) || 0;
+    }
+
+    const imageFile = formData.get('image') as File;
+    if (imageFile && imageFile.size > 0) {
+      const bytes = await imageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      try { await fs.access(uploadDir); } catch { await fs.mkdir(uploadDir, { recursive: true }); }
+      await fs.writeFile(path.join(uploadDir, filename), buffer);
+      updateData.image = `/uploads/${filename}`;
+    }
+
+    const updatedService = await db.services.update({
+      where: { id },
+      data: updateData
+    });
+
+    return NextResponse.json({ success: true, data: updatedService });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const authData = getAuthAdmin(req);
+    if (!authData) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    await db.services.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true, message: 'Service deleted successfully' });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}

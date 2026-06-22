@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model projects {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  category    String
+  status      String   @default("ongoing")
+  client      String?
+  location    String?
+  year        Int?
+  featured    Boolean  @default(false)
+  images      String   @default("[]")
+  coverImage  String?
+  seoTitle    String?
+  seoDesc     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model services {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  shortDesc   String?
+  icon        String?
+  image       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model gallery_items {
+  id        String   @id @default(cuid())
+  url       String
+  caption   String?
+  category  String?
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model testimonials {
+  id          String   @id @default(cuid())
+  name        String
+  company     String?
+  designation String?
+  message     String
+  rating      Int      @default(5)
+  image       String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model team_members {
+  id          String   @id @default(cuid())
+  name        String
+  designation String
+  bio         String?
+  image       String?
+  email       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model enquiries {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  service   String?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}
+
+model site_content {
+  id        String   @id @default(cuid())
+  page      String
+  section   String
+  key       String
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model settings {
+  id          String   @id @default(cuid())
+  companyName String
+  logo        String?
+  email       String?
+  phone       String?
+  address     String?
+  facebook    String?
+  instagram   String?
+  linkedin    String?
+  seoTitle    String?
+  seoDesc     String?
+  updatedAt   DateTime @updatedAt
+}
+
+model admin_users {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model categories {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  type      String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
