@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { DataTable } from '@/components/admin/DataTable';
@@ -9,7 +10,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Edit, Trash2, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ProjectsPage() {
+function ProjectsContent() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -146,5 +147,13 @@ export default function ProjectsPage() {
         />
       </Drawer>
     </div>
+  );
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <ProjectsContent />
+    </Suspense>
   );
 }

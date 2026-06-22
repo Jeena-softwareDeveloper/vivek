@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -23,7 +24,7 @@ const colorThemes = [
 ];
 import Link from 'next/link';
 
-export default function ServicesPage() {
+function ServicesContent() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -157,5 +158,13 @@ export default function ServicesPage() {
         />
       </Drawer>
     </div>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <ServicesContent />
+    </Suspense>
   );
 }

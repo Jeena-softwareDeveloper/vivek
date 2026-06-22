@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -6,7 +7,7 @@ import { DataTable } from '@/components/admin/DataTable';
 import { Drawer } from '@/components/ui/Drawer';
 import { TeamForm } from '@/components/admin/TeamForm';
 
-export default function TeamAdminPage() {
+function TeamAdminContent() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -97,3 +98,11 @@ export default function TeamAdminPage() {
   );
 }
 
+
+export default function TeamAdminPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <TeamAdminContent />
+    </Suspense>
+  );
+}

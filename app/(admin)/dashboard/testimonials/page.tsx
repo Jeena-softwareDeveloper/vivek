@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -7,7 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Drawer } from '@/components/ui/Drawer';
 import { TestimonialForm } from '@/components/admin/TestimonialForm';
 
-export default function TestimonialsAdminPage() {
+function TestimonialsAdminContent() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -98,5 +99,13 @@ export default function TestimonialsAdminPage() {
         <TestimonialForm id={editId} onSuccess={handleSaved} onCancel={handleCloseDrawer} />
       </Drawer>
     </div>
+  );
+}
+
+export default function TestimonialsAdminPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <TestimonialsAdminContent />
+    </Suspense>
   );
 }

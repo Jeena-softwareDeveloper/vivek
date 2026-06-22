@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -9,7 +10,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Plus, Tag } from 'lucide-react';
 import Link from 'next/link';
 
-export default function CategoriesPage() {
+function CategoriesContent() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -113,5 +114,13 @@ export default function CategoriesPage() {
         />
       </Drawer>
     </div>
+  );
+}
+
+export default function CategoriesPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <CategoriesContent />
+    </Suspense>
   );
 }

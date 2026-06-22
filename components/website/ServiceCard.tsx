@@ -34,7 +34,7 @@ export function ServiceCard({ service, index }: ServiceCardProps) {
           alt={service.title}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = fallbackImages[index % fallbackImages.length];
+            (e.target as HTMLImageElement).src = defaultImages[index % defaultImages.length];
           }}
         />
         {/* Dark gradient overlay mainly at the bottom */}

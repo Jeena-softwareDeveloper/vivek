@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -7,7 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Drawer } from '@/components/ui/Drawer';
 import { GalleryForm } from '@/components/admin/GalleryForm';
 
-export default function GalleryAdminPage() {
+function GalleryAdminContent() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,3 +100,11 @@ export default function GalleryAdminPage() {
   );
 }
 
+
+export default function GalleryAdminPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+      <GalleryAdminContent />
+    </Suspense>
+  );
+}

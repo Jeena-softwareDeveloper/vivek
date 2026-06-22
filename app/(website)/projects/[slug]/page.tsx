@@ -73,7 +73,7 @@ export default async function ProjectDetailPage({
                 <div className="mt-12">
                   <h3 className="text-2xl font-display font-bold text-text-dark mb-6">Project Gallery</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {project.images.map((imgUrl, idx) => (
+                    {(project.images as string[]).map((imgUrl: string, idx: number) => (
                       <div key={idx} className="relative h-[250px] sm:h-[300px] rounded-xl overflow-hidden group shadow-sm border border-border">
                         <img 
                           src={imgUrl} 
