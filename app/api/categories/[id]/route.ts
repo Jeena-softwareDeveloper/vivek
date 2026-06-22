@@ -20,8 +20,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!name || !slug) {
       return NextResponse.json({ success: false, error: 'Name and slug are required' }, { status: 400 });
     }
-
-    // Check slug collision
     const existing = await prisma.categories.findUnique({ where: { slug } });
     if (existing && existing.id !== id) {
       return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
