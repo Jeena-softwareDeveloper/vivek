@@ -17,28 +17,28 @@ export default async function AboutPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative pt-28 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#081221]">
+      <div className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-[#081221] min-h-[40vh] flex items-center">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
             src="/images/building.png" 
             alt="Construction background" 
-            className="w-full h-full object-cover object-[75%_center] opacity-60"
+            className="w-full h-full object-cover object-[80%_center] opacity-70"
           />
           {/* Gradients to keep text readable on left but image clear on right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#081221] via-[#081221]/80 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#081221] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#081221] via-[#081221]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#081221]/80 via-transparent to-transparent"></div>
         </div>
         
-        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10">
+        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10 w-full">
           <div className="max-w-3xl text-left">
             {/* Main Title */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
               Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-[#0a42a8]">Tomorrow</span>,<br /> Together
             </h1>
             
             {/* Description */}
-            <p className="text-lg md:text-xl text-slate-200 leading-relaxed mb-10 drop-shadow-md">
+            <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-10 drop-shadow-md">
               VIVEK VIJAY &amp; CO. has been shaping Tamil Nadu's skyline and delivering engineering excellence since 2007. We don&apos;t just build structures; we build trust, communities, and lasting legacies.
             </p>
           </div>

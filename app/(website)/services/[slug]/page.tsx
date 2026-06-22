@@ -2,7 +2,9 @@ import React from 'react';
 import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { CTABanner } from '@/components/website/CTABanner';
-import { Wrench, HardHat, Home, Building2, Hammer, CheckCircle2 } from 'lucide-react';
+import { Badge } from '@/components/ui/Badge';
+import { Wrench, HardHat, Home, Building2, Hammer, CheckCircle2, ArrowLeft, Clock, Phone, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
 
 const iconMap: Record<string, React.ElementType> = {
   Wrench,
@@ -33,49 +35,107 @@ export default async function ServiceDetailPage({
 
   return (
     <>
-      <div className="bg-primary pt-32 pb-20 text-center relative overflow-hidden">
-        {/* Abstract Background */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-        
+      {/* Service Hero Banner */}
+      <div 
+        className="relative h-[60vh] min-h-[400px] flex items-end pb-16"
+        style={{
+          backgroundImage: `url('${service.image || '/images/placeholder.jpg'}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050f24]/90 via-[#050f24]/40 to-black/20" />
         <div className="container relative z-10 mx-auto px-4 xl:max-w-[1280px]">
-          <div className="w-20 h-20 bg-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-6 text-secondary">
-            <IconComponent size={40} />
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
+          <Badge className="mb-4 text-sm px-4 py-1 flex items-center gap-2 w-max" variant="warning">
+            <IconComponent size={14} />
+            Service Excellence
+          </Badge>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">
             {service.title}
           </h1>
         </div>
       </div>
 
-      <section className="py-20 bg-surface min-h-[50vh]">
+      <section className="py-20 bg-surface">
         <div className="container mx-auto px-4 xl:max-w-[1280px]">
-          <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-border">
-            <h2 className="text-3xl font-display font-bold text-text-dark mb-8">Service Overview</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             
-            <div className="prose prose-lg max-w-none text-text-medium mb-12">
-              <div className="whitespace-pre-wrap">{service.description}</div>
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <Link href="/services" className="inline-flex items-center text-text-medium hover:text-primary mb-8 font-medium transition-colors">
+                <ArrowLeft size={16} className="mr-2" />
+                Back to Services
+              </Link>
+              
+              <h2 className="text-3xl font-display font-bold text-text-dark mb-6">Service Overview</h2>
+              <div className="prose prose-lg max-w-none text-text-medium mb-12">
+                <div className="whitespace-pre-wrap">{service.description}</div>
+              </div>
+
+              {/* Feature List */}
+              <div className="bg-white rounded-xl p-8 border border-border shadow-sm">
+                <h3 className="text-2xl font-bold text-text-dark mb-6">Why Choose Us For This Service?</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-secondary shrink-0 mt-1" size={24} />
+                    <p className="text-text-medium">Industry-leading safety standards</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-secondary shrink-0 mt-1" size={24} />
+                    <p className="text-text-medium">Experienced project managers</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-secondary shrink-0 mt-1" size={24} />
+                    <p className="text-text-medium">Transparent pricing & timelines</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-secondary shrink-0 mt-1" size={24} />
+                    <p className="text-text-medium">High-quality materials & finish</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Example Feature List - Hardcoded for visual completeness, but could be dynamic later */}
-            <div className="bg-surface rounded-xl p-8 border border-border">
-              <h3 className="text-xl font-bold text-text-dark mb-6">Why Choose Us For This Service?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="text-secondary shrink-0 mt-1" size={20} />
-                  <p className="text-text-medium">Industry-leading safety standards</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="text-secondary shrink-0 mt-1" size={20} />
-                  <p className="text-text-medium">Experienced project managers</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="text-secondary shrink-0 mt-1" size={20} />
-                  <p className="text-text-medium">Transparent pricing & timelines</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="text-secondary shrink-0 mt-1" size={20} />
-                  <p className="text-text-medium">High-quality materials & finish</p>
-                </div>
+            {/* Sidebar Details */}
+            <div className="lg:col-span-1">
+              <div className="bg-white p-8 rounded-xl border border-border sticky top-32 shadow-sm">
+                <h3 className="text-xl font-bold text-text-dark mb-6 border-b border-border pb-4">
+                  Service Details
+                </h3>
+                
+                <ul className="space-y-6">
+                  <li className="flex items-start gap-4">
+                    <Building2 className="text-secondary shrink-0 mt-1" size={20} />
+                    <div>
+                      <span className="block text-sm text-text-light mb-1">Provider</span>
+                      <span className="font-semibold text-text-dark">Vivek Vijay & Company</span>
+                    </div>
+                  </li>
+                  
+                  <li className="flex items-start gap-4">
+                    <ShieldCheck className="text-secondary shrink-0 mt-1" size={20} />
+                    <div>
+                      <span className="block text-sm text-text-light mb-1">Quality</span>
+                      <span className="font-semibold text-text-dark">ISO Certified Standards</span>
+                    </div>
+                  </li>
+
+                  <li className="flex items-start gap-4">
+                    <Clock className="text-secondary shrink-0 mt-1" size={20} />
+                    <div>
+                      <span className="block text-sm text-text-light mb-1">Availability</span>
+                      <span className="font-semibold text-text-dark">Full-Time Operation</span>
+                    </div>
+                  </li>
+
+                  <li className="flex items-start gap-4">
+                    <Phone className="text-secondary shrink-0 mt-1" size={20} />
+                    <div>
+                      <span className="block text-sm text-text-light mb-1">Consultation</span>
+                      <Link href="/contact" className="font-semibold text-[#0a42a8] hover:underline">Book Now</Link>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
 

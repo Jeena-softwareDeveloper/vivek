@@ -11,6 +11,34 @@ export default function AdminLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  React.useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async function (...args) {
+      const response = await originalFetch.apply(this, args);
+      // If the API returns 401 Unauthorized, automatically log out
+      if (response.status === 401 && window.location.pathname !== '/login') {
+        localStorage.removeItem('adminToken');
+        window.location.href = '/login';
+      }
+      return response;
+    };
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
+
+  // Verify authentication on page load
+  React.useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      window.location.href = '/login';
+    } else {
+      fetch('/api/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface flex overflow-hidden">
       {/* Mobile Sidebar Overlay */}

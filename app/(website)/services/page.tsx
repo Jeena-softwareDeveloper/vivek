@@ -14,28 +14,24 @@ export default async function ServicesPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative pt-28 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#081221]">
+      <div className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-[#081221] min-h-[40vh] flex items-center">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
             src="/images/services_hero_bg.png" 
             alt="Services background" 
-            className="w-full h-full object-cover object-[75%_center] opacity-85"
+            className="w-full h-full object-cover object-center opacity-90"
           />
-          {/* Gradients to keep text readable on left but image clear on right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#081221] via-[#081221]/50 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#081221]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-[#081221]/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#081221]/90 to-transparent w-2/3"></div>
         </div>
         
-        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10">
+        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10 w-full">
           <div className="max-w-3xl text-left">
-            {/* Main Title */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
               Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-[#0a42a8]">Services</span>
             </h1>
-            
-            {/* Description */}
-            <p className="text-lg md:text-xl text-slate-200 leading-relaxed mb-10 drop-shadow-md">
+            <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-10 drop-shadow-md">
               Comprehensive construction solutions tailored to meet the unique needs of every client and project.
             </p>
           </div>

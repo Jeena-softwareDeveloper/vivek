@@ -25,14 +25,14 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         <img
           src={project.coverImage || (project.images && project.images.length > 0 ? project.images[0] : '/images/placeholder.jpg')}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+          className="absolute inset-0 w-full h-full object-cover object-[center_top] transition-transform duration-1000 group-hover:scale-110"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
           }}
         />
         
         {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050f24] via-[#050f24]/60 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050f24] via-[#050f24]/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
         
         {/* Category Badge */}
         <div className="absolute top-5 left-5 z-20">
@@ -49,7 +49,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           </h3>
           
           <div className="flex items-center gap-1.5 text-slate-300 text-[13px] mb-3">
-            <MapPin size={14} className="text-[#0a42a8]" />
+            <MapPin size={14} className="text-blue-400" />
             <span className="line-clamp-1">{project.location || 'Multiple Locations'}</span>
           </div>
 
@@ -57,20 +57,20 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           <div className="flex items-center gap-4 text-slate-400 text-[12px] mb-3 pb-3 border-b border-white/10">
             {project.client && (
               <div className="flex items-center gap-1.5">
-                <Building2 size={14} className="text-[#0a42a8]" />
+                <Building2 size={14} className="text-blue-400" />
                 <span className="truncate max-w-[120px]">{project.client}</span>
               </div>
             )}
             {project.year && (
               <div className="flex items-center gap-1.5">
-                <Calendar size={14} className="text-[#0a42a8]" />
+                <Calendar size={14} className="text-blue-400" />
                 <span>Completed: {project.year}</span>
               </div>
             )}
           </div>
           
           {/* Action Link */}
-          <div className="flex items-center gap-1.5 text-[14px] font-medium text-[#0a42a8] group-hover:text-blue-400 transition-colors">
+          <div className="flex items-center gap-1.5 text-[14px] font-medium text-blue-400 group-hover:text-blue-300 transition-colors">
             View Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

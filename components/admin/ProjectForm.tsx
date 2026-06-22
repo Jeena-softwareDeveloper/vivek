@@ -179,6 +179,8 @@ export function ProjectForm({ id, onSuccess, onCancel }: ProjectFormProps) {
       
       if (imageFile) {
         submitData.append('coverImage', imageFile);
+      } else if (!imagePreview && id) {
+        submitData.append('removeCoverImage', 'true');
       }
       
       // Append existing images state so backend knows which ones were kept
@@ -250,11 +252,14 @@ export function ProjectForm({ id, onSuccess, onCancel }: ProjectFormProps) {
           ) : (
             <div className="relative w-full h-48 rounded-xl overflow-hidden border border-border group">
               <Image src={imagePreview} alt="Preview" fill className="object-cover" />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button type="button" onClick={clearImage} className="bg-white/20 hover:bg-red-500 text-white backdrop-blur-md p-2 rounded-full transition-colors" title="Remove Image">
-                  <X size={20} />
-                </button>
-              </div>
+              <button 
+                type="button" 
+                onClick={clearImage} 
+                className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full shadow-md transition-colors z-10" 
+                title="Remove Image"
+              >
+                <X size={18} />
+              </button>
             </div>
           )}
           <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/*" className="hidden" />

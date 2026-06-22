@@ -52,6 +52,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const coverImage = formData.get('coverImage') as File;
     if (coverImage && coverImage.size > 0) {
       updateData.coverImage = await uploadToCloudinary(coverImage, 'construction-projects');
+    } else if (formData.get('removeCoverImage') === 'true') {
+      updateData.coverImage = null;
     }
 
     // Handle existing images from the frontend

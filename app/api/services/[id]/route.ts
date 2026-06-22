@@ -50,6 +50,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       try { await fs.access(uploadDir); } catch { await fs.mkdir(uploadDir, { recursive: true }); }
       await fs.writeFile(path.join(uploadDir, filename), buffer);
       updateData.image = `/uploads/${filename}`;
+    } else if (formData.get('removeImage') === 'true') {
+      updateData.image = null;
     }
 
     const updatedService = await db.services.update({
