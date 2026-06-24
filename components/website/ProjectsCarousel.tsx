@@ -42,7 +42,7 @@ export function ProjectsCarousel({ projects }: { projects: any[] }) {
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {projects.map((project) => (
-          <div key={project.id} className="min-w-[100%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] snap-start shrink-0">
+          <div key={project.id} className="min-w-[100%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] snap-start shrink-0">
             <ProjectCard project={project} />
           </div>
         ))}

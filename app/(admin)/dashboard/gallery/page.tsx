@@ -36,7 +36,6 @@ function GalleryAdminContent() {
   }, [isDrawerOpen]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this image?')) return;
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch(`/api/gallery/${id}`, {

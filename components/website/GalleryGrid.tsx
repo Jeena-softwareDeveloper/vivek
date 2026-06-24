@@ -68,7 +68,7 @@ export function GalleryGrid({ items }: GalleryGridProps) {
         <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center backdrop-blur-sm">
           <button 
             onClick={closeLightbox}
-            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
+            className="absolute top-6 right-6 z-50 p-2 text-white/70 hover:text-white transition-colors cursor-pointer"
           >
             <X size={32} />
           </button>

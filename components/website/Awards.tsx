@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export function Awards() {
   return (
-    <section className="w-full bg-[#0f172a]">
+    <section className="w-full" style={{ background: 'linear-gradient(160deg, #0f172a 0%, #0e2254 50%, #0f172a 100%)' }}>
       <div className="flex flex-col md:flex-row max-w-7xl mx-auto w-full">
         {/* Left side Image */}
         <div className="w-full md:w-2/5 lg:w-[40%] min-h-[300px] flex items-center justify-center py-8">

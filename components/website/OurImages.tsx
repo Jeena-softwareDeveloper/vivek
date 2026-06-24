@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export function OurImages({ items = [] }: { items?: any[] }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -37,13 +39,22 @@ export function OurImages({ items = [] }: { items?: any[] }) {
       `}} />
 
       <div className="container mx-auto px-4 xl:max-w-[1280px]">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-[44px] font-display font-extrabold text-[#0f172a] mb-6 tracking-tight">
-            OUR GALLERY
-          </h2>
-          <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
-            Explore a visual journey of our iconic projects, construction processes, and the dedicated teams behind our success.
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+          <div className="max-w-3xl">
+            <h2 className="text-4xl md:text-[44px] font-display font-extrabold text-[#0f172a] mb-4 tracking-tight">
+              OUR GALLERY
+            </h2>
+            <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium m-0">
+              Explore a visual journey of our iconic projects, construction processes, and the dedicated teams behind our success.
+            </p>
+          </div>
+          <div className="shrink-0 hidden md:block">
+            <Link href="/gallery">
+              <Button className="rounded-none bg-[#0a42a8] hover:bg-[#083587] text-white px-8 h-12 text-[14px] md:text-base font-medium">
+                View All Gallery <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="relative">
@@ -69,7 +80,7 @@ export function OurImages({ items = [] }: { items?: any[] }) {
             {displayItems.map((src, idx) => (
               <div 
                 key={idx} 
-                className="w-[85vw] md:w-[45vw] lg:w-[calc(25%_-_18px)] flex-shrink-0 h-[300px] md:h-[400px] snap-center rounded-3xl overflow-hidden shadow-md group relative cursor-pointer"
+                className="w-[85vw] md:w-[45vw] lg:w-[calc(25%_-_18px)] flex-shrink-0 h-[300px] md:h-[400px] snap-center rounded-lg overflow-hidden shadow-md group relative cursor-pointer"
               >
                 <img 
                   src={src} 
@@ -85,6 +96,15 @@ export function OurImages({ items = [] }: { items?: any[] }) {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile View All Button */}
+        <div className="mt-8 md:hidden flex justify-center">
+          <Link href="/gallery" className="w-full">
+            <Button className="w-full rounded-none bg-[#0a42a8] hover:bg-[#083587] text-white h-12 text-[14px] font-medium flex justify-center items-center">
+              View All Gallery <ArrowRight size={18} className="ml-2" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

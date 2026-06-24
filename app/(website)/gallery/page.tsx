@@ -1,5 +1,6 @@
 import React from 'react';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { GalleryItem } from '@/lib/models/GalleryItem';
 import { GalleryGrid } from '@/components/website/GalleryGrid';
 import { CTABanner } from '@/components/website/CTABanner';
 
@@ -12,25 +13,36 @@ export default async function GalleryPage({
 }) {
   const { category } = await searchParams;
 
-  const whereClause = category ? { category } : {};
+  await connectDB();
+  const filter = category ? { category } : {};
   
-  const galleryItems = await db.gallery_items.findMany({
-    where: whereClause,
-    orderBy: { order: 'asc' }
-  });
+  const rawGalleryItems = await GalleryItem.find(filter).sort({ order: 1 }).lean();
+  const galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
 
   // Extract unique categories
-  const allItems = await db.gallery_items.findMany({ select: { category: true } });
-  const categories = Array.from(new Set(allItems.map(i => i.category).filter(Boolean)));
+  const allItems = await GalleryItem.find().select('category').lean();
+  const categories = Array.from(new Set(allItems.map((i: any) => i.category).filter(Boolean)));
 
   return (
     <>
-      <div className="bg-primary pt-32 pb-20 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
-            Image <span className="text-secondary">Gallery</span>
+      {/* Hero Section */}
+      <div className="relative pt-40 pb-20 overflow-hidden bg-[#0f172a] min-h-[65vh] flex flex-col justify-center">
+        {/* Background Layers */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/tamil_gallery_hero.png" 
+            alt="Gallery background" 
+            className="w-full h-full object-cover object-center opacity-90"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent w-2/3"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 md:px-8 xl:max-w-[1280px] relative z-10 w-full">
+          <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
+            Image <span className="text-yellow-500">Gallery</span>
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
             A visual showcase of our craftsmanship, progress, and completed works.
           </p>
         </div>
@@ -40,10 +52,14 @@ export default async function GalleryPage({
         <div className="container mx-auto px-4 xl:max-w-[1280px]">
           
           {/* Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+          <div className="flex overflow-x-auto whitespace-nowrap gap-3 md:gap-4 mb-12 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:justify-center">
             <a 
               href="/gallery" 
-              className={`px-6 py-2 rounded-full font-medium transition-colors ${!category ? 'bg-secondary text-primary' : 'bg-white text-text-medium hover:bg-secondary/20'}`}
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 shadow-sm border ${
+                !category 
+                  ? 'bg-[#0a42a8] text-white border-[#0a42a8]' 
+                  : 'bg-white text-gray-600 border-gray-200 hover:bg-[#0a42a8] hover:text-white hover:border-[#0a42a8]'
+              }`}
             >
               All Images
             </a>
@@ -51,7 +67,11 @@ export default async function GalleryPage({
               <a 
                 key={cat}
                 href={`/gallery?category=${encodeURIComponent(cat as string)}`} 
-                className={`px-6 py-2 rounded-full font-medium transition-colors ${category === cat ? 'bg-secondary text-primary' : 'bg-white text-text-medium hover:bg-secondary/20'}`}
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 shadow-sm border ${
+                  category === cat 
+                    ? 'bg-[#0a42a8] text-white border-[#0a42a8]' 
+                    : 'bg-white text-gray-600 border-gray-200 hover:bg-[#0a42a8] hover:text-white hover:border-[#0a42a8]'
+                }`}
               >
                 {cat}
               </a>

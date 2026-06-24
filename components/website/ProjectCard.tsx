@@ -18,8 +18,8 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   if (categoryLower.includes('residential') || categoryLower.includes('villa') || categoryLower.includes('apartment')) CategoryIcon = Home;
 
   return (
-    <Link href={`/projects/${project.slug}`} className="block group">
-      <div className="relative h-[320px] lg:h-[380px] rounded-2xl overflow-hidden bg-slate-900 shadow-lg border border-white/10 transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-[#0a42a8]/20">
+    <Link href={`/projects/${project.slug}`} className="group block h-full">
+      <div className="relative h-full min-h-[320px] lg:min-h-[380px] rounded-lg overflow-hidden bg-[#0f172a] shadow-xl border-none transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-[#0a42a8]/20 flex flex-col">
         
         {/* Background Image */}
         <img
@@ -31,13 +31,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
           }}
         />
         
-        {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050f24] via-[#050f24]/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+        {/* Dark Gradient Overlay — stronger at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
         
         {/* Category Badge */}
         <div className="absolute top-5 left-5 z-20">
           <div className="bg-[#0a42a8] text-white text-[10px] font-bold uppercase tracking-[0.1em] px-3 py-1.5 rounded-md shadow-md flex items-center gap-1.5">
-            <CategoryIcon size={14} />
+            <CategoryIcon size={14} className="text-white" />
             {project.category}
           </div>
         </div>
@@ -48,29 +48,29 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             {project.title}
           </h3>
           
-          <div className="flex items-center gap-1.5 text-slate-300 text-[13px] mb-3">
-            <MapPin size={14} className="text-blue-400" />
+          <div className="flex items-center gap-1.5 text-white/80 text-[13px] mb-3">
+            <MapPin size={14} className="text-white" />
             <span className="line-clamp-1">{project.location || 'Multiple Locations'}</span>
           </div>
 
           {/* Details Row */}
-          <div className="flex items-center gap-4 text-slate-400 text-[12px] mb-3 pb-3 border-b border-white/10">
+          <div className="flex items-center gap-4 text-white/70 text-[12px] mb-3 pb-3 border-b border-white/20">
             {project.client && (
               <div className="flex items-center gap-1.5">
-                <Building2 size={14} className="text-blue-400" />
+                <Building2 size={14} className="text-white" />
                 <span className="truncate max-w-[120px]">{project.client}</span>
               </div>
             )}
             {project.year && (
               <div className="flex items-center gap-1.5">
-                <Calendar size={14} className="text-blue-400" />
+                <Calendar size={14} className="text-white" />
                 <span>Completed: {project.year}</span>
               </div>
             )}
           </div>
           
           {/* Action Link */}
-          <div className="flex items-center gap-1.5 text-[14px] font-medium text-blue-400 group-hover:text-blue-300 transition-colors">
+          <div className="flex items-center gap-1.5 text-[14px] font-medium text-white group-hover:text-blue-200 transition-colors">
             View Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

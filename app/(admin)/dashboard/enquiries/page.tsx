@@ -30,8 +30,6 @@ export default function EnquiriesPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this enquiry?')) return;
-    
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch(`/api/enquiries/${id}`, {

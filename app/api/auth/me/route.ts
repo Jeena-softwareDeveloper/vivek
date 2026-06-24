@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthAdmin } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { AdminUser } from '@/lib/models/AdminUser';
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,15 +14,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const adminUser = await db.admin_users.findUnique({
-      where: { id: authData.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-      }
-    });
+    await connectDB();
+    const adminUser = await AdminUser.findById(authData.id).select('name email role').lean() as any;
+    if (adminUser) {
+      adminUser.id = adminUser._id.toString();
+    }
 
     if (!adminUser) {
       return NextResponse.json(

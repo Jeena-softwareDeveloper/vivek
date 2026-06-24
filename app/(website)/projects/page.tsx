@@ -1,5 +1,7 @@
 import React from 'react';
-import { db } from '@/lib/db';
+import Link from 'next/link';
+import { connectDB } from '@/lib/db';
+import { Project } from '@/lib/models/Project';
 import { ProjectCard } from '@/components/website/ProjectCard';
 import { CTABanner } from '@/components/website/CTABanner';
 import { HeroSlider } from '@/components/website/HeroSlider';
@@ -13,28 +15,25 @@ export default async function ProjectsPortfolioPage({
 }) {
   const { category } = await searchParams;
 
-  const whereClause = category ? { category } : {};
+  await connectDB();
+  const filter = category ? { category } : {};
   
-  const rawProjects = await db.projects.findMany({
-    where: whereClause,
-    orderBy: { createdAt: 'desc' }
-  });
+  const rawProjects = await Project.find(filter).sort({ createdAt: -1 }).lean();
 
-  const projects = rawProjects.map(p => ({
+  const projects = rawProjects.map((p: any) => ({
     ...p,
-    images: (typeof p.images === 'string' && p.images.startsWith('[')) ? JSON.parse(p.images) : (p.images ? [p.images] : [])
+    id: p._id.toString()
   }));
 
   // Extract unique categories for filter (in real app, query DB distinct)
-  const allProjects = await db.projects.findMany({ select: { category: true } });
-  const categories = Array.from(new Set(allProjects.map(p => p.category)));
+  const allProjects = await Project.find().select('category').lean();
+  const categories = Array.from(new Set(allProjects.map((p: any) => p.category).filter(Boolean)));
 
   // Fetch featured projects for the hero background slider
-  const featuredProjects = await db.projects.findMany({
-    where: { featured: true },
-    select: { coverImage: true, images: true },
-    orderBy: { createdAt: 'desc' },
-  });
+  const featuredProjects = await Project.find({ featured: true })
+    .select('coverImage images createdAt')
+    .sort({ createdAt: -1 })
+    .lean();
 
   const heroImages = featuredProjects
     .map((p: any) => {
@@ -45,13 +44,22 @@ export default async function ProjectsPortfolioPage({
 
   return (
     <>
-      <div className="relative bg-primary pt-32 pb-20 text-center overflow-hidden">
-        {heroImages.length > 0 && <HeroSlider images={heroImages} />}
-        <div className="container relative z-10 mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 drop-shadow-md">
-            Our <span className="text-secondary">Portfolio</span>
+      <div className="relative bg-[#0f172a] pt-40 pb-20 min-h-[65vh] flex flex-col justify-center overflow-hidden">
+        {/* Background Layers */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/tamil_projects_hero_v2.png" 
+            alt="Projects background" 
+            className="w-full h-full object-cover object-center opacity-90"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent w-2/3"></div>
+        </div>
+        <div className="container relative z-10 mx-auto px-4 md:px-8 xl:max-w-[1280px]">
+          <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 drop-shadow-md">
+            Our <span className="text-yellow-500">Projects</span>
           </h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto drop-shadow">
+          <p className="text-base md:text-[17px] text-gray-200 max-w-xl drop-shadow leading-relaxed">
             Explore our extensive portfolio of successful construction and engineering projects.
           </p>
         </div>
@@ -61,21 +69,31 @@ export default async function ProjectsPortfolioPage({
         <div className="container mx-auto px-4 xl:max-w-[1280px]">
           
           {/* Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-            <a 
+          <div className="flex overflow-x-auto whitespace-nowrap gap-3 md:gap-4 mb-12 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:justify-center">
+            <Link 
               href="/projects" 
-              className={`px-6 py-2 rounded-full font-medium transition-colors ${!category ? 'bg-secondary text-primary' : 'bg-white text-text-medium hover:bg-secondary/20'}`}
+              scroll={false}
+              className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 border ${
+                !category 
+                  ? 'bg-[#0a42a8] text-white border-[#0a42a8] shadow-md shadow-blue-900/20' 
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-[#0a42a8] hover:text-[#0a42a8] shadow-sm hover:shadow-md'
+              }`}
             >
               All Projects
-            </a>
+            </Link>
             {categories.map((cat) => (
-              <a 
+              <Link 
                 key={cat}
                 href={`/projects?category=${encodeURIComponent(cat)}`} 
-                className={`px-6 py-2 rounded-full font-medium transition-colors ${category === cat ? 'bg-secondary text-primary' : 'bg-white text-text-medium hover:bg-secondary/20'}`}
+                scroll={false}
+                className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 border ${
+                  category === cat 
+                    ? 'bg-[#0a42a8] text-white border-[#0a42a8] shadow-md shadow-blue-900/20' 
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-[#0a42a8] hover:text-[#0a42a8] shadow-sm hover:shadow-md'
+                }`}
               >
                 {cat}
-              </a>
+              </Link>
             ))}
           </div>
 

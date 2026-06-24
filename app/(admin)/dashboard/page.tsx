@@ -18,15 +18,16 @@ export default function DashboardOverview() {
         const token = localStorage.getItem('adminToken');
         if (!token) return;
 
-        // In a real app, you'd have a specific /api/stats endpoint,
-        // but here we can just fetch the lists and count them or build the endpoint later.
-        // For now, we'll use placeholder numbers until the /api/stats endpoint is built.
-        setStats({
-          projects: 12,
-          services: 6,
-          testimonials: 24,
-          enquiries: 3
+        const res = await fetch('/api/stats', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
+        const data = await res.json();
+        
+        if (data.success) {
+          setStats(data.data);
+        }
       } catch (error) {
         console.error('Failed to load stats', error);
       }

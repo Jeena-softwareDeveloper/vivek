@@ -54,8 +54,6 @@ function ServicesContent() {
   }, [isDrawerOpen]); // Refresh when drawer closes
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this service?')) return;
-    
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch(`/api/services/${id}`, {

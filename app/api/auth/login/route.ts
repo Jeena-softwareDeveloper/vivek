@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { AdminUser } from '@/lib/models/AdminUser';
 import bcrypt from 'bcryptjs';
 import { signToken } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
   try {
+    await connectDB();
     const { email, password } = await req.json();
 
     if (!email || !password) {
@@ -14,9 +16,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const adminUser = await db.admin_users.findUnique({
-      where: { email },
-    });
+    const adminUser = await AdminUser.findOne({ email }).lean() as any;
 
     if (!adminUser) {
       return NextResponse.json(
@@ -34,14 +34,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const token = signToken({ id: adminUser.id, role: adminUser.role });
+    const token = signToken({ id: adminUser._id.toString(), role: adminUser.role });
 
     return NextResponse.json({
       success: true,
       data: {
         token,
         user: {
-          id: adminUser.id,
+          id: adminUser._id.toString(),
           name: adminUser.name,
           email: adminUser.email,
           role: adminUser.role,

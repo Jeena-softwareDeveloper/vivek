@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { TeamMember } from '@/lib/models/TeamMember';
+import { Testimonial } from '@/lib/models/Testimonial';
 import { TeamCard } from '@/components/website/TeamCard';
 import { TestimonialCarousel } from '@/components/website/TestimonialCarousel';
 import { Target, Shield, Users, HardHat, Building2, CheckCircle2, Leaf, Award } from 'lucide-react';
@@ -8,45 +10,48 @@ import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'About Us',
+  description: 'Learn about Vivek Vijay and Company — 18+ years of engineering excellence in Tamil Nadu. Our story, mission, values, and the expert team behind every landmark project.',
+};
+
 export default async function AboutPage() {
-  const [teamMembers, testimonials] = await Promise.all([
-    db.team_members.findMany({ orderBy: { order: 'asc' } }),
-    db.testimonials.findMany({ where: { active: true } })
+  await connectDB();
+  const [rawTeam, rawTestimonials] = await Promise.all([
+    TeamMember.find().sort({ order: 1 }).lean(),
+    Testimonial.find({ active: true }).lean()
   ]);
+  const teamMembers = rawTeam.map((t: any) => ({ ...t, id: t._id.toString() }));
+  const testimonials = rawTestimonials.map((t: any) => ({ ...t, id: t._id.toString() }));
 
   return (
     <>
       {/* Hero Section */}
-      <div className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-[#081221] min-h-[40vh] flex items-center">
+      <div className="relative pt-40 pb-20 overflow-hidden bg-[#0f172a] min-h-[65vh] flex flex-col justify-center">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
             src="/images/building.png" 
             alt="Construction background" 
-            className="w-full h-full object-cover object-[80%_center] opacity-70"
+            className="w-full h-full object-cover object-[80%_center]"
           />
-          {/* Gradients to keep text readable on left but image clear on right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#081221] via-[#081221]/60 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#081221]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/10 to-transparent w-3/4"></div>
         </div>
         
-        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10 w-full">
-          <div className="max-w-3xl text-left">
-            {/* Main Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
-              Building <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-[#0a42a8]">Tomorrow</span>,<br /> Together
-            </h1>
-            
-            {/* Description */}
-            <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-10 drop-shadow-md">
-              VIVEK VIJAY &amp; CO. has been shaping Tamil Nadu's skyline and delivering engineering excellence since 2007. We don&apos;t just build structures; we build trust, communities, and lasting legacies.
-            </p>
-          </div>
+        <div className="container mx-auto px-4 md:px-8 xl:max-w-[1280px] relative z-10 w-full">
+          <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
+            Building <span className="text-yellow-500">Tomorrow</span>,<br /> Together
+          </h1>
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
+            For over 18 years, VIVEK VIJAY &amp; CO. has been pioneering architectural excellence and delivering world-class infrastructure across Tamil Nadu. We don&apos;t just construct buildings; we forge lasting legacies built on trust, innovation, and uncompromising quality.
+          </p>
         </div>
       </div>
 
       {/* Our Story & Legacy */}
-      <section className="py-20 md:py-28 bg-white">
+      <section className="pt-20 pb-10 md:pt-28 md:pb-12 bg-white">
         <div className="container mx-auto px-4 xl:max-w-[1280px]">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
             {/* Left Content */}
@@ -60,11 +65,14 @@ export default async function AboutPage() {
               </div>
               
               <div className="prose prose-lg text-slate-600 mb-10 leading-relaxed">
-                <p className="mb-6">
-                  As a premier engineering contractor in Tamil Nadu, India, we have been at the forefront of infrastructure development since 2007. With many years of experience, we bring a comprehensive range of capabilities to major infrastructure projects, demonstrating an unwavering commitment to quality, safety, and efficiency.
+                <p className="mb-6 text-justify">
+                  Established in 2007, <strong>VIVEK VIJAY &amp; CO.</strong> has grown to become one of Tamil Nadu&apos;s most respected names in engineering and construction. For over 18 years, we have been a driving force behind state-of-the-art commercial complexes, residential properties, and critical infrastructure that redefine the skyline and empower communities.
                 </p>
-                <p>
-                  Our integrated approach and adaptability enable us to deliver exceptional results across various sectors. Each project is meticulously monitored to ensure maximum utilization of materials, structural integrity, and timely completion. Our dedication to excellence has established us as a trusted leader in the industry, consistently meeting the highest standards of construction and engineering.
+                <p className="mb-6 text-justify">
+                  Our success is built on an uncompromising dedication to structural integrity, transparent project management, and cutting-edge construction methodologies. By integrating advanced technology with sustainable building practices, we deliver landmark projects that not only meet today&apos;s stringent standards but are engineered to stand the test of time.
+                </p>
+                <p className="text-justify">
+                  From concept to completion, we function as a trusted partner to our clients. Our multi-disciplinary team of seasoned engineers, architects, and project managers work cohesively to ensure every structure we build reflects our core ethos: <em>Excellence in every brick, Trust in every transaction.</em>
                 </p>
               </div>
               
@@ -111,7 +119,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Core Values Section */}
-      <section className="py-20 md:py-28 bg-[#f8fafc]">
+      <section className="pt-10 pb-20 md:pt-12 md:pb-28 bg-slate-50">
         <div className="container mx-auto px-4 xl:max-w-[1280px]">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-[#0a42a8] font-bold tracking-[0.15em] uppercase text-sm block mb-3">Our Philosophy</span>
@@ -153,7 +161,50 @@ export default async function AboutPage() {
       </section>
 
 
+      {/* Team Section */}
+      {teamMembers.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 xl:max-w-[1280px]">
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-[#0a42a8] font-bold tracking-[0.15em] uppercase text-sm block mb-3">The People Behind the Projects</span>
+              <h2 className="text-3xl md:text-5xl font-display font-extrabold text-[#0f172a] mb-4">Meet Our Team</h2>
+              <p className="text-slate-600 text-lg">Experienced engineers, project managers, and construction specialists committed to delivering excellence on every build.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {teamMembers.map((member) => (
+                <TeamCard key={member.id} member={member as any} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
+      {/* Testimonials Section */}
+      {testimonials.length > 0 && (
+        <section className="py-20 bg-slate-50">
+          <div className="container mx-auto px-4 xl:max-w-[1280px]">
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-[#0a42a8] font-bold tracking-[0.15em] uppercase text-sm block mb-3">What Our Clients Say</span>
+              <h2 className="text-3xl md:text-5xl font-display font-extrabold text-[#0f172a] mb-4">Client Testimonials</h2>
+              <p className="text-slate-600 text-lg">Real words from the government bodies, institutions, and businesses that trusted us to build their vision.</p>
+            </div>
+            <TestimonialCarousel testimonials={testimonials as any} />
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
+      <section className="py-16 bg-[#0a42a8]">
+        <div className="container mx-auto px-4 xl:max-w-[1280px] text-center">
+          <h2 className="text-3xl md:text-4xl font-display font-extrabold text-white mb-4">Ready to Build with Us?</h2>
+          <p className="text-blue-100 text-lg mb-8 max-w-xl mx-auto">Let's discuss how our 18+ years of engineering expertise can bring your next project to life.</p>
+          <Link href="/contact">
+            <button className="bg-[#FFB800] hover:bg-[#E5A600] text-black font-bold px-10 py-4 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              Get in Touch →
+            </button>
+          </Link>
+        </div>
+      </section>
 
     </>
   );

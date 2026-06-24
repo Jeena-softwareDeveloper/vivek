@@ -21,9 +21,9 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 w-full z-50 flex flex-col bg-gradient-to-b from-[#0a1230] via-[#0a1230]/90 to-transparent">
+    <header className="fixed top-0 w-full z-50 flex flex-col transition-all duration-300 drop-shadow-md">
       {/* Top Bar */}
-      <div className="hidden lg:flex border-b border-white/10 text-gray-300 text-[13px] py-2">
+      {/* <div className="hidden lg:flex bg-[#050b1a]/95 border-b border-white/5 text-gray-300 text-[13px] py-2">
         <div className="container mx-auto px-4 xl:max-w-[1280px] flex justify-between items-center">
           <div className="flex items-center gap-6">
             <a href="tel:+919842044777" className="flex items-center gap-2 hover:text-white transition-colors">
@@ -52,18 +52,18 @@ export function Navbar() {
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Navbar */}
-      <div className="text-white w-full pb-2 pt-1 relative z-10">
+      <div className="text-white w-full pb-4 pt-2 relative z-10 bg-gradient-to-b from-[#050b1a]/95 via-[#050b1a]/70 to-transparent">
         <div className="container mx-auto px-4 xl:max-w-[1280px] flex items-center justify-between">
           {/* Logo */}
         <Link href="/" className="flex items-center gap-1 group -ml-2">
           <Image
             src="/images/logo.png"
             alt="Vivek Vijay & Co. Logo"
-            width={72}
-            height={72}
+            width={70}
+            height={70}
             className="object-contain transition-transform group-hover:scale-105"
           />
           <div className="flex flex-col justify-center ml-1">
@@ -89,7 +89,6 @@ export function Navbar() {
                 }`}
               >
                 {link.name}
-                {link.name === 'Services' && <ChevronDown size={14} className="opacity-70 mt-0.5" />}
               </Link>
             ))}
           </nav>
@@ -107,21 +106,38 @@ export function Navbar() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full shadow-xl border-t border-white/10" style={{ background: 'linear-gradient(135deg, rgba(5,10,30,0.88) 0%, rgba(10,25,65,0.78) 60%, rgba(0,70,150,0.6) 100%)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
-          <nav className="flex flex-col py-4 px-6 space-y-4">
+        <div className="lg:hidden fixed inset-0 z-[60] bg-[#050b1a] bg-opacity-95 backdrop-blur-xl flex flex-col pt-28 px-8 h-screen overflow-y-auto">
+          {/* Close Button */}
+          <button 
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2"
+          >
+            <X size={32} />
+          </button>
+          
+          <nav className="flex flex-col space-y-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-lg font-medium transition-colors ${
-                  pathname === link.href ? 'text-secondary' : 'text-white'
+                className={`text-2xl font-bold tracking-wide transition-colors ${
+                  pathname === link.href ? 'text-[#FFB800]' : 'text-white hover:text-gray-300'
                 }`}
               >
                 {link.name}
               </Link>
             ))}
           </nav>
+          
+          <div className="mt-12 pt-8 border-t border-white/10 flex flex-col space-y-4">
+            <a href="tel:+919842044777" className="flex items-center gap-3 text-gray-300 hover:text-white">
+              <Phone size={20} className="text-[#FFB800]" /> +91 98420 44777
+            </a>
+            <a href="mailto:support@vivekvijayandcompany.in" className="flex items-center gap-3 text-gray-300 hover:text-white">
+              <Mail size={20} className="text-[#FFB800]" /> support@vivekvijayandcompany.in
+            </a>
+          </div>
         </div>
       )}
     </header>

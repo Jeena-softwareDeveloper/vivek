@@ -1,40 +1,45 @@
 import React from 'react';
 import Link from 'next/link';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { Service } from '@/lib/models/Service';
 import { ServiceCard } from '@/components/website/ServiceCard';
 import { CTABanner } from '@/components/website/CTABanner';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'Our Services',
+  description: 'Explore Vivek Vijay and Company comprehensive construction services — hospitals, commercial buildings, roads, bridges, landscaping and more across Tamil Nadu.',
+};
+
 export default async function ServicesPage() {
-  const services = await db.services.findMany({
-    orderBy: { order: 'asc' },
-  });
+  await connectDB();
+  const rawServices = await Service.find().sort({ order: 1 }).lean();
+  const services = rawServices.map((s: any) => ({ ...s, id: s._id.toString() }));
 
   return (
     <>
       {/* Hero Section */}
-      <div className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-[#081221] min-h-[40vh] flex items-center">
+      <div className="relative pt-40 pb-20 overflow-hidden bg-[#0f172a] min-h-[65vh] flex flex-col justify-center">
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/services_hero_bg.png" 
+            src="/images/tamil_services_hero.png" 
             alt="Services background" 
-            className="w-full h-full object-cover object-center opacity-90"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-[#081221]/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#081221]/90 to-transparent w-2/3"></div>
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/10 to-transparent w-3/4"></div>
         </div>
         
-        <div className="container mx-auto px-4 xl:max-w-[1280px] relative z-10 w-full">
-          <div className="max-w-3xl text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-white mb-6 leading-tight drop-shadow-lg">
-              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-[#0a42a8]">Services</span>
-            </h1>
-            <p className="text-base md:text-lg text-slate-200 leading-relaxed mb-10 drop-shadow-md">
-              Comprehensive construction solutions tailored to meet the unique needs of every client and project.
-            </p>
-          </div>
+        <div className="container mx-auto px-4 md:px-8 xl:max-w-[1280px] relative z-10 w-full">
+          <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
+            Our <span className="text-yellow-500">Services</span>
+          </h1>
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
+            Comprehensive construction solutions tailored to meet the unique needs of every client and project.
+          </p>
         </div>
       </div>
 

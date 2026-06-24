@@ -30,8 +30,8 @@ export function HeroSlider({ images }: { images: string[] }) {
           />
         </div>
       ))}
-      <div className="absolute inset-0 bg-[#081221]/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#081221]/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent w-2/3" />
     </div>
   );
 }

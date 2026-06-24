@@ -8,8 +8,12 @@ const mulish = Mulish({
 });
 
 export const metadata: Metadata = {
-  title: "VIVEK VIJAY AND COMPANY",
-  description: "VIVEK VIJAY AND COMPANY - ENGINEERING CONTRACTORS",
+  title: {
+    default: 'VIVEK VIJAY AND COMPANY | Engineering Contractors Tamil Nadu',
+    template: '%s | VIVEK VIJAY AND COMPANY',
+  },
+  description: 'Vivek Vijay and Company — Tamil Nadu\'s premier engineering contractor since 2007. Specialists in hospitals, commercial buildings, institutional projects, roads, bridges and more. Trusted by government and private clients across Tamil Nadu.',
+  keywords: ['engineering contractor Tamil Nadu', 'construction company Erode', 'civil contractor Tamil Nadu', 'government construction projects', 'Vivek Vijay and Company'],
 };
 
 export default function RootLayout({

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { connectDB } from '@/lib/db';
+import { Category } from '@/lib/models/Category';
 import { getAuthAdmin } from '@/lib/auth';
-
-const prisma = new PrismaClient();
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await connectDB();
     const user = getAuthAdmin(request);
     if (!user) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
@@ -20,21 +20,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!name || !slug) {
       return NextResponse.json({ success: false, error: 'Name and slug are required' }, { status: 400 });
     }
-    const existing = await prisma.categories.findUnique({ where: { slug } });
-    if (existing && existing.id !== id) {
+    const existing = await Category.findOne({ slug }).lean() as any;
+    if (existing && existing._id.toString() !== id) {
       return NextResponse.json({ success: false, error: 'Slug already exists' }, { status: 400 });
     }
 
-    const updatedCategory = await prisma.categories.update({
-      where: { id },
-      data: {
-        name,
-        slug,
-        type,
-      },
-    });
+    const updatedCategory = await Category.findByIdAndUpdate(id, { name, slug, type }, { new: true }).lean() as any;
 
-    return NextResponse.json({ success: true, data: updatedCategory });
+    return NextResponse.json({ success: true, data: { ...updatedCategory, id: updatedCategory._id.toString() } });
   } catch (error) {
     console.error('Failed to update category:', error);
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
@@ -43,16 +36,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await connectDB();
     const user = getAuthAdmin(request);
     if (!user) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
-
-    await prisma.categories.delete({
-      where: { id },
-    });
+    await Category.findByIdAndDelete(id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { Service } from '@/lib/models/Service';
 import { getAuthAdmin } from '@/lib/auth';
 import { promises as fs } from 'fs';
 import path from 'path';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await connectDB();
     const { id } = await params;
-    const service = await db.services.findUnique({
-      where: { id }
-    });
+    const service = await Service.findById(id).lean() as any;
 
     if (!service) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, data: service });
+    return NextResponse.json({ success: true, data: { ...service, id: service._id.toString() } });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -23,15 +23,16 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await connectDB();
     const authData = getAuthAdmin(req);
     if (!authData) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
     const { id } = await params;
     const formData = await req.formData();
-    
+
     const updateData: any = {};
     const stringFields = ['title', 'slug', 'description', 'shortDesc', 'icon'];
-    
+
     stringFields.forEach(field => {
       const val = formData.get(field);
       if (val !== null) updateData[field] = val as string;
@@ -54,12 +55,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       updateData.image = null;
     }
 
-    const updatedService = await db.services.update({
-      where: { id },
-      data: updateData
-    });
+    const updatedService = await Service.findByIdAndUpdate(id, updateData, { new: true }).lean() as any;
 
-    return NextResponse.json({ success: true, data: updatedService });
+    return NextResponse.json({ success: true, data: { ...updatedService, id: updatedService._id.toString() } });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -67,13 +65,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await connectDB();
     const authData = getAuthAdmin(req);
     if (!authData) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
 
     const { id } = await params;
-    await db.services.delete({
-      where: { id }
-    });
+    await Service.findByIdAndDelete(id);
 
     return NextResponse.json({ success: true, message: 'Service deleted successfully' });
   } catch (error: any) {

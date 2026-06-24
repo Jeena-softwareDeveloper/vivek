@@ -1,5 +1,6 @@
 import React from 'react';
-import { db } from '@/lib/db';
+import { connectDB } from '@/lib/db';
+import { Service } from '@/lib/models/Service';
 import { notFound } from 'next/navigation';
 import { CTABanner } from '@/components/website/CTABanner';
 import { Badge } from '@/components/ui/Badge';
@@ -23,9 +24,9 @@ export default async function ServiceDetailPage({
 }) {
   const { slug } = await params;
   
-  const service = await db.services.findUnique({
-    where: { slug }
-  });
+  await connectDB();
+  const rawService = await Service.findOne({ slug }).lean() as any;
+  const service = rawService ? { ...rawService, id: rawService._id.toString() } : null;
 
   if (!service) {
     notFound();
@@ -36,21 +37,24 @@ export default async function ServiceDetailPage({
   return (
     <>
       {/* Service Hero Banner */}
-      <div 
-        className="relative h-[60vh] min-h-[400px] flex items-end pb-16"
-        style={{
-          backgroundImage: `url('${service.image || '/images/placeholder.jpg'}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050f24]/90 via-[#050f24]/40 to-black/20" />
-        <div className="container relative z-10 mx-auto px-4 xl:max-w-[1280px]">
+      <div className="relative bg-[#0f172a] pt-40 pb-20 min-h-[65vh] flex flex-col justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={service.image || '/images/placeholder.jpg'} 
+            alt={service.title} 
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/10 to-transparent w-3/4"></div>
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4 md:px-8 xl:max-w-[1280px]">
           <Badge className="mb-4 text-sm px-4 py-1 flex items-center gap-2 w-max" variant="warning">
             <IconComponent size={14} />
             Service Excellence
           </Badge>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 drop-shadow-md leading-tight">
             {service.title}
           </h1>
         </div>
