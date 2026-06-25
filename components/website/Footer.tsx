@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 export function Footer() {
@@ -11,12 +12,18 @@ export function Footer() {
           {/* Brand Info */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-6">
-              <img src="/images/logo.png" alt="Vivek Vijay and Company Logo" className="h-10 w-auto" />
+              <Image 
+                src="/images/logo.png" 
+                alt="Vivek Vijay & Co. Logo" 
+                width={70} 
+                height={70} 
+                className="object-contain"
+              />
               <div>
-                <div className="text-lg font-display font-bold uppercase tracking-wider leading-tight">
-                  VIVEK VIJAY <span className="text-[#C89B3C]">&amp; CO.</span>
+                <div className="text-lg font-display font-bold uppercase tracking-wider leading-tight text-white">
+                  VIVEK VIJAY &amp; CO.
                 </div>
-                <div className="text-[10px] tracking-widest text-gray-400 uppercase">Engineering Contractors</div>
+                <div className="text-[10px] tracking-widest text-white uppercase mt-1">Engineering Contractors</div>
               </div>
             </Link>
             <p className="text-gray-400 mb-6 leading-relaxed text-sm">
@@ -30,7 +37,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-display font-semibold mb-6">Quick Links</h3>
+            <h3 className="text-xl font-display font-semibold mb-6 text-white">Quick Links</h3>
             <ul className="space-y-3 text-gray-400">
               <li><Link href="/" className="hover:text-[#C89B3C] transition-colors">Home</Link></li>
               <li><Link href="/about" className="hover:text-[#C89B3C] transition-colors">About Us</Link></li>
@@ -43,7 +50,7 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-xl font-display font-semibold mb-6">Our Expertise</h3>
+            <h3 className="text-xl font-display font-semibold mb-6 text-white">Our Expertise</h3>
             <ul className="space-y-3 text-gray-400 text-sm">
               <li>Hospitals &amp; Healthcare</li>
               <li>Commercial Buildings</li>
@@ -55,7 +62,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xl font-display font-semibold mb-6">Contact Us</h3>
+            <h3 className="text-xl font-display font-semibold mb-6 text-white">Contact Us</h3>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#C89B3C] shrink-0 mt-0.5" />

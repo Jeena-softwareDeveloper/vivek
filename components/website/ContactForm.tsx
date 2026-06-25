@@ -67,7 +67,7 @@ export function ContactForm() {
           required
           value={formData.name}
           onChange={handleChange}
-          placeholder="John Doe"
+          placeholder="Karthik Raja"
         />
         <Input
           label="Email Address"
@@ -76,7 +76,7 @@ export function ContactForm() {
           required
           value={formData.email}
           onChange={handleChange}
-          placeholder="john@example.in"
+          placeholder="karthik@example.in"
         />
       </div>
 
@@ -86,7 +86,7 @@ export function ContactForm() {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          placeholder="+1 (555) 000-0000"
+          placeholder="+91 98420 12345"
         />
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-text-medium">Service of Interest</label>
