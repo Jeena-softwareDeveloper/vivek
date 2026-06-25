@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/construction';
+const MONGODB_URI = 'mongodb+srv://vivek:vivek@cluster0.ekdopce.mongodb.net/construction';
 
 // We import the models directly
 import { Category } from '../lib/models/Category';
