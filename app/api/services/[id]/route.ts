@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Service } from '@/lib/models/Service';
 import { getAuthAdmin } from '@/lib/auth';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 import { promises as fs } from 'fs';
 import path from 'path';
+
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -44,13 +46,17 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const imageFile = formData.get('image') as File;
     if (imageFile && imageFile.size > 0) {
-      const bytes = await imageFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const filename = `${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-      try { await fs.access(uploadDir); } catch { await fs.mkdir(uploadDir, { recursive: true }); }
-      await fs.writeFile(path.join(uploadDir, filename), buffer);
-      updateData.image = `/uploads/${filename}`;
+      if (process.env.CLOUDINARY_CLOUD_NAME) {
+        updateData.image = await uploadToCloudinary(imageFile, 'construction-services');
+      } else {
+        const bytes = await imageFile.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const filename = `${Date.now()}-${imageFile.name.replace(/\s+/g, '-')}`;
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        try { await fs.access(uploadDir); } catch { await fs.mkdir(uploadDir, { recursive: true }); }
+        await fs.writeFile(path.join(uploadDir, filename), buffer);
+        updateData.image = `/uploads/${filename}`;
+      }
     } else if (formData.get('removeImage') === 'true') {
       updateData.image = null;
     }
