@@ -5,7 +5,7 @@ import { TeamMember } from '@/lib/models/TeamMember';
 import { Testimonial } from '@/lib/models/Testimonial';
 import { TeamCard } from '@/components/website/TeamCard';
 import { TestimonialCarousel } from '@/components/website/TestimonialCarousel';
-import { Target, Shield, Users, HardHat, Building2, CheckCircle2, Leaf, Award } from 'lucide-react';
+import { Target, Shield, Users, HardHat, Building2, CheckCircle2, Leaf, Award, Phone } from 'lucide-react';
 import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
@@ -24,8 +24,8 @@ export default async function AboutPage() {
       TeamMember.find().sort({ order: 1 }).lean(),
       Testimonial.find({ active: true }).lean()
     ]);
-    teamMembers = rawTeam.map((t: any) => ({ ...t, id: t._id.toString() }));
-    testimonials = rawTestimonials.map((t: any) => ({ ...t, id: t._id.toString() }));
+    teamMembers = JSON.parse(JSON.stringify(rawTeam.map((t: any) => ({ ...t, id: t._id?.toString() }))));
+    testimonials = JSON.parse(JSON.stringify(rawTestimonials.map((t: any) => ({ ...t, id: t._id?.toString() }))));
   } catch (error) {
     console.error('Database error in AboutPage:', error);
   }
@@ -50,7 +50,7 @@ export default async function AboutPage() {
           <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
             Building <span className="text-yellow-500">Tomorrow</span>,<br /> Together
           </h1>
-          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-2xl drop-shadow-md">
             For over 18 years, VIVEK VIJAY &amp; CO. has been pioneering architectural excellence and delivering world-class infrastructure across Tamil Nadu. We don&apos;t just construct buildings; we forge lasting legacies built on trust, innovation, and uncompromising quality.
           </p>
         </div>
@@ -108,9 +108,9 @@ export default async function AboutPage() {
             <div className="w-full lg:w-1/2 relative">
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-[#0a42a8]/10 rounded-full blur-2xl z-0"></div>
               <img 
-                src="/images/man_wrtiong.png" 
+                src="/images/engineer_logo_shirt.png" 
                 alt="Our Engineers at Work" 
-                className="rounded-2xl shadow-2xl w-full h-[400px] sm:h-[500px] object-cover relative z-10"
+                className="rounded-2xl shadow-2xl w-full h-[400px] sm:h-[500px] object-cover object-[center_15%] relative z-10"
               />
               
               {/* Floating Stat Card */}
@@ -166,6 +166,46 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* Board Members Section */}
+      <section className="py-16 bg-white border-b border-slate-100">
+        <div className="container mx-auto px-4 xl:max-w-[1280px]">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-[#0a42a8] font-bold tracking-[0.15em] uppercase text-sm block mb-2">Leadership</span>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-[#0f172a]">Board Members</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            <div className="p-8 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 bg-[#0a42a8]/10 text-[#0a42a8] rounded-full flex items-center justify-center shrink-0">
+                  <Users size={28} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800">S. Vivek Vijay</h3>
+                  <p className="text-sm font-medium text-slate-500 mb-1">Managing Partner</p>
+                  <a href="tel:+919842044777" className="text-base font-semibold text-[#0a42a8] flex items-center gap-2 mt-2 hover:underline">
+                    <Phone size={16} /> +91 98420 44777
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 bg-[#0a42a8]/10 text-[#0a42a8] rounded-full flex items-center justify-center shrink-0">
+                  <Users size={28} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800">P. Ravikumar</h3>
+                  <p className="text-sm font-medium text-slate-500 mb-1">Managing Partner</p>
+                  <a href="tel:+919842470001" className="text-base font-semibold text-[#0a42a8] flex items-center gap-2 mt-2 hover:underline">
+                    <Phone size={16} /> +91 98424 70001
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Team Section */}
       {teamMembers.length > 0 && (

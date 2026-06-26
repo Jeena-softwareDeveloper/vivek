@@ -48,7 +48,7 @@ export function AboutPreview() {
             {/* Bottom Right Image */}
             <div className="absolute -bottom-10 right-0 md:-bottom-16 md:-right-8 w-[60%] aspect-square border-[8px] md:border-[12px] border-white shadow-2xl z-20 overflow-hidden bg-white">
               <img 
-                src="/images/man_wrtiong.png" 
+                src="/images/engineer_logo_shirt.png" 
                 alt="Engineering Planning" 
                 className="w-full h-full object-cover"
               />

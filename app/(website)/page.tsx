@@ -28,17 +28,17 @@ export default async function HomePage() {
       .limit(10)
       .lean();
 
-    featuredProjects = rawFeaturedProjects.map((p: any) => ({
+    featuredProjects = JSON.parse(JSON.stringify(rawFeaturedProjects.map((p: any) => ({
       ...p,
-      id: p._id.toString()
-    }));
+      id: p._id?.toString()
+    }))));
 
     const rawGalleryItems = await GalleryItem.find()
       .sort({ order: 1 })
       .limit(12)
       .lean();
       
-    galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
+    galleryItems = JSON.parse(JSON.stringify(rawGalleryItems.map((i: any) => ({ ...i, id: i._id?.toString() }))));
   } catch (error) {
     console.error('Database error in HomePage:', error);
   }

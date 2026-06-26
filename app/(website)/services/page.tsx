@@ -17,7 +17,7 @@ export default async function ServicesPage() {
   try {
     await connectDB();
     const rawServices = await Service.find().sort({ order: 1 }).lean();
-    services = rawServices.map((s: any) => ({ ...s, id: s._id.toString() }));
+    services = JSON.parse(JSON.stringify(rawServices.map((s: any) => ({ ...s, id: s._id?.toString() }))));
   } catch (error) {
     console.error('Database error in ServicesPage:', error);
   }
@@ -42,8 +42,8 @@ export default async function ServicesPage() {
           <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
             Our <span className="text-yellow-500">Services</span>
           </h1>
-          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
-            Comprehensive construction solutions tailored to meet the unique needs of every client and project.
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-2xl drop-shadow-md">
+            Comprehensive construction solutions tailored to meet the unique engineering requirements of government bodies, institutions, and businesses across Tamil Nadu. From turnkey project execution to specialized structural planning, we ensure precision at every milestone.
           </p>
         </div>
       </div>

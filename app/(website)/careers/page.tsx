@@ -16,7 +16,7 @@ export default async function CareersPage() {
   try {
     await connectDB();
     const rawCareers = await Career.find({ isActive: true }).sort({ order: 1, createdAt: -1 }).lean();
-    careers = rawCareers.map((c: any) => ({ ...c, id: c._id.toString() }));
+    careers = JSON.parse(JSON.stringify(rawCareers.map((c: any) => ({ ...c, id: c._id?.toString() }))));
   } catch (error) {
     console.error('Database connection error in CareersPage:', error);
   }
@@ -47,7 +47,7 @@ export default async function CareersPage() {
             Build Excellence, <br /><span className="text-[#FFB800]">Shape Your Career</span>
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-2xl drop-shadow-md font-normal">
-            At Vivek Vijay &amp; Co., we combine six decades of engineering tradition with modern innovation. Discover opportunities to grow, lead, and construct landmark infrastructure across Tamil Nadu.
+            At Vivek Vijay &amp; Co., we combine six decades of engineering tradition with cutting-edge modern innovation. Discover opportunities to grow, lead, and construct landmark hospitals, institutions, and infrastructure across Tamil Nadu. Join us in shaping the future skyline.
           </p>
         </div>
       </div>

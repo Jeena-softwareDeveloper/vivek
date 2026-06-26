@@ -15,9 +15,9 @@ export default function ContactPage() {
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/man_wrtiong.png" 
-            alt="Contact background" 
-            className="w-full h-full object-cover object-[center_30%]"
+            src="/images/contact_hero_bg_final.png" 
+            alt="Engineering Contact Background" 
+            className="w-full h-full object-cover object-center opacity-85"
           />
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent"></div>
@@ -28,8 +28,8 @@ export default function ContactPage() {
           <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
             Contact <span className="text-yellow-500">Us</span>
           </h1>
-          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
-            Get in touch with our team of experts to discuss your next construction project.
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-2xl drop-shadow-md">
+            Get in touch with our expert engineering contracting team to discuss your upcoming architectural or infrastructure developments. Whether you are planning a commercial complex, healthcare institution, or residential community, we are here to bring your vision to life.
           </p>
         </div>
       </div>
@@ -93,26 +93,6 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 pt-4 border-t border-slate-200">
-                  <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0">
-                    <Users size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-text-dark mb-3">Board Members</h4>
-                    <div className="text-text-medium space-y-4">
-                      <p>
-                        <strong className="text-slate-800">S. Vivek Vijay</strong><br/>
-                        <span className="text-sm">Managing Partner</span><br/>
-                        <a href="tel:+919842044777" className="hover:text-[#0a42a8] transition-colors">+91 98420 44777</a>
-                      </p>
-                      <p>
-                        <strong className="text-slate-800">P. Ravikumar</strong><br/>
-                        <span className="text-sm">Managing Partner</span><br/>
-                        <a href="tel:+919842470001" className="hover:text-[#0a42a8] transition-colors">+91 98424 70001</a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 

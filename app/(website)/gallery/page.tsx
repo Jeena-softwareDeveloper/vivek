@@ -20,7 +20,7 @@ export default async function GalleryPage({
     const filter = category ? { category } : {};
     
     const rawGalleryItems = await GalleryItem.find(filter).sort({ order: 1 }).lean();
-    galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
+    galleryItems = JSON.parse(JSON.stringify(rawGalleryItems.map((i: any) => ({ ...i, id: i._id?.toString() }))));
 
     const allItems = await GalleryItem.find().select('category').lean();
     categories = Array.from(new Set(allItems.map((i: any) => i.category).filter(Boolean))) as string[];
@@ -47,8 +47,8 @@ export default async function GalleryPage({
           <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 leading-tight drop-shadow-md">
             Image <span className="text-yellow-500">Gallery</span>
           </h1>
-          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-xl drop-shadow-md">
-            A visual showcase of our craftsmanship, progress, and completed works.
+          <p className="text-base md:text-[17px] text-gray-200 leading-relaxed max-w-2xl drop-shadow-md">
+            A rich visual showcase of our structural craftsmanship, on-site execution progress, and completed architectural landmarks across Tamil Nadu. Witness the dedication, safety standards, and engineering mastery behind every project.
           </p>
         </div>
       </div>

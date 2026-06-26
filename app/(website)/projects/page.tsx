@@ -24,10 +24,10 @@ export default async function ProjectsPortfolioPage({
     const filter = category ? { category } : {};
     
     const rawProjects = await Project.find(filter).sort({ createdAt: -1 }).lean();
-    projects = rawProjects.map((p: any) => ({
+    projects = JSON.parse(JSON.stringify(rawProjects.map((p: any) => ({
       ...p,
-      id: p._id.toString()
-    }));
+      id: p._id?.toString()
+    }))));
 
     const allProjects = await Project.find().select('category').lean();
     categories = Array.from(new Set(allProjects.map((p: any) => p.category).filter(Boolean))) as string[];
@@ -53,9 +53,9 @@ export default async function ProjectsPortfolioPage({
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/tamil_projects_hero_v2.png" 
-            alt="Projects background" 
-            className="w-full h-full object-cover object-center opacity-90"
+            src="/images/kolathur_angadi.png" 
+            alt="Tamil Nadu Construction Landmark Project" 
+            className="w-full h-full object-cover object-[center_35%] opacity-90"
           />
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent w-2/3"></div>
@@ -64,8 +64,8 @@ export default async function ProjectsPortfolioPage({
           <h1 className="text-3xl md:text-4xl lg:text-[42px] font-display font-bold text-white mb-4 drop-shadow-md">
             Our <span className="text-yellow-500">Projects</span>
           </h1>
-          <p className="text-base md:text-[17px] text-gray-200 max-w-xl drop-shadow leading-relaxed">
-            Explore our extensive portfolio of successful construction and engineering projects.
+          <p className="text-base md:text-[17px] text-gray-200 max-w-2xl drop-shadow leading-relaxed">
+            Explore our extensive portfolio of successful civil engineering landmarks, industrial complexes, hospitals, and infrastructure developments across Tamil Nadu. Every structure represents our 18+ year commitment to safety, architectural beauty, and enduring strength.
           </p>
         </div>
       </div>
