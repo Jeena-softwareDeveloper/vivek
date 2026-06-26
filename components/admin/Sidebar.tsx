@@ -14,7 +14,8 @@ import {
   Tag,
   Settings,
   LogOut,
-  Briefcase
+  Briefcase,
+  Award
 } from 'lucide-react';
 
 const navItems = [
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/dashboard/gallery', label: 'Gallery', icon: ImageIcon },
   { href: '/dashboard/categories', label: 'Categories', icon: Tag },
   { href: '/dashboard/careers', label: 'Careers', icon: Briefcase },
+  { href: '/dashboard/clients', label: 'Clients', icon: Award },
 ];
 
 export function Sidebar({ 

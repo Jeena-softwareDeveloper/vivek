@@ -118,9 +118,23 @@ export function ContactForm() {
         ></textarea>
       </div>
 
-      <Button type="submit" size="lg" disabled={loading} className="w-full md:w-auto">
-        {loading ? 'Sending...' : 'Send Message'}
-      </Button>
+      <div className="flex items-start gap-3 pt-2">
+        <input
+          id="privacyConsent"
+          type="checkbox"
+          required
+          className="mt-1 w-4.5 h-4.5 rounded border-slate-300 text-[#0a42a8] focus:ring-[#0a42a8] cursor-pointer accent-[#0a42a8]"
+        />
+        <label htmlFor="privacyConsent" className="text-sm text-slate-600 cursor-pointer select-none leading-relaxed">
+          I have read and agree to the <a href="/privacy-policy" target="_blank" className="text-[#0a42a8] font-bold underline hover:text-[#083382]">Privacy Policy</a> and authorize Vivek Vijay &amp; Co. to contact me regarding my enquiry.
+        </label>
+      </div>
+
+      <div className="pt-2">
+        <Button type="submit" size="lg" disabled={loading} className="w-full md:w-auto px-8 py-3 bg-[#0a42a8] hover:bg-[#083382] text-white font-bold tracking-wide rounded-lg shadow-md transition-all">
+          {loading ? 'Sending Message...' : 'Send Message'}
+        </Button>
+      </div>
     </form>
   );
 }

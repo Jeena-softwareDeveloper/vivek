@@ -53,7 +53,7 @@ export default async function ProjectsPortfolioPage({
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/kolathur_angadi.png" 
+            src="/images/WhatsApp%20Image%202024-09-09%20at%202.08.28%20PM.jpeg" 
             alt="Tamil Nadu Construction Landmark Project" 
             className="w-full h-full object-cover object-[center_35%] opacity-90"
           />

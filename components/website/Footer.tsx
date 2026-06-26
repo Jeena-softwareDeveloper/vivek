@@ -92,9 +92,16 @@ export function Footer() {
         </div>
 
         {/* High Contrast White Copyright Bar */}
-        <div className="border-t border-white/15 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-slate-300 font-medium">
+        <div className="border-t border-white/15 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-slate-300 font-medium gap-4 pb-4">
           <p className="text-white drop-shadow">&copy; {new Date().getFullYear()} VIVEK VIJAY AND COMPANY. All rights reserved.</p>
-          <p className="mt-2 md:mt-0 text-slate-300 text-xs tracking-wider uppercase font-semibold">Engineering Excellence Since 2007 · Erode, Tamil Nadu</p>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-300 font-semibold">
+            <Link href="/privacy-policy" className="hover:text-[#FFB800] transition-colors">Privacy Policy</Link>
+            <span className="text-white/20">·</span>
+            <Link href="/terms-and-conditions" className="hover:text-[#FFB800] transition-colors">Terms &amp; Conditions</Link>
+            <span className="text-white/20">·</span>
+            <Link href="/disclaimer" className="hover:text-[#FFB800] transition-colors">Disclaimer</Link>
+          </div>
+          <p className="text-slate-400 text-xs tracking-wider uppercase font-semibold">Erode, Tamil Nadu</p>
         </div>
       </div>
     </footer>

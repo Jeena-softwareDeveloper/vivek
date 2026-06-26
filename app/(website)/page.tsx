@@ -11,8 +11,10 @@ import { Button } from '@/components/ui/Button';
 import { connectDB } from '@/lib/db';
 import { Project } from '@/lib/models/Project';
 import { GalleryItem } from '@/lib/models/GalleryItem';
+import { Client } from '@/lib/models/Client';
 import { ArrowRight } from 'lucide-react';
 import { ProjectsCarousel } from '@/components/website/ProjectsCarousel';
+import { ClientsMarquee } from '@/components/website/ClientsMarquee';
 
 // Force dynamic since we fetch from DB
 export const dynamic = 'force-dynamic';
@@ -20,9 +22,13 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   let featuredProjects: any[] = [];
   let galleryItems: any[] = [];
+  let clients: any[] = [];
 
   try {
     await connectDB();
+    const rawClients = await Client.find({ isActive: true }).sort({ order: 1, createdAt: -1 }).lean();
+    clients = JSON.parse(JSON.stringify(rawClients.map((c: any) => ({ ...c, id: c._id?.toString() }))));
+
     const rawFeaturedProjects = await Project.find({ featured: true })
       .sort({ createdAt: -1 })
       .limit(10)
@@ -89,6 +95,7 @@ export default async function HomePage() {
       <OurSectors />
       <Awards />
       <OurImages items={galleryItems} />
+      <ClientsMarquee initialClients={clients} />
     </>
   );
 }
