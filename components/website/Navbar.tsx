@@ -85,7 +85,8 @@ export function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`text-[14px] font-semibold transition-colors hover:text-white flex items-center gap-1 pb-1 border-b-2 ${
+                prefetch={true}
+                className={`text-[16.5px] font-bold tracking-wide transition-all duration-150 hover:text-white active:scale-95 flex items-center gap-1 pb-1 border-b-2 ${
                   pathname === link.href ? 'text-white border-[#FFB800]' : 'text-gray-300 border-transparent'
                 }`}
               >
@@ -121,8 +122,9 @@ export function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
+                prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-2xl font-bold tracking-wide transition-colors ${
+                className={`text-2xl font-bold tracking-wide transition-all active:scale-95 ${
                   pathname === link.href ? 'text-[#FFB800]' : 'text-white hover:text-gray-300'
                 }`}
               >
