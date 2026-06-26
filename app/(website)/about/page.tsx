@@ -16,13 +16,19 @@ export const metadata = {
 };
 
 export default async function AboutPage() {
-  await connectDB();
-  const [rawTeam, rawTestimonials] = await Promise.all([
-    TeamMember.find().sort({ order: 1 }).lean(),
-    Testimonial.find({ active: true }).lean()
-  ]);
-  const teamMembers = rawTeam.map((t: any) => ({ ...t, id: t._id.toString() }));
-  const testimonials = rawTestimonials.map((t: any) => ({ ...t, id: t._id.toString() }));
+  let teamMembers: any[] = [];
+  let testimonials: any[] = [];
+  try {
+    await connectDB();
+    const [rawTeam, rawTestimonials] = await Promise.all([
+      TeamMember.find().sort({ order: 1 }).lean(),
+      Testimonial.find({ active: true }).lean()
+    ]);
+    teamMembers = rawTeam.map((t: any) => ({ ...t, id: t._id.toString() }));
+    testimonials = rawTestimonials.map((t: any) => ({ ...t, id: t._id.toString() }));
+  } catch (error) {
+    console.error('Database error in AboutPage:', error);
+  }
 
   return (
     <>

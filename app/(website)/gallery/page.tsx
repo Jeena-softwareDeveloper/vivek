@@ -13,15 +13,20 @@ export default async function GalleryPage({
 }) {
   const { category } = await searchParams;
 
-  await connectDB();
-  const filter = category ? { category } : {};
-  
-  const rawGalleryItems = await GalleryItem.find(filter).sort({ order: 1 }).lean();
-  const galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
+  let galleryItems: any[] = [];
+  let categories: string[] = [];
+  try {
+    await connectDB();
+    const filter = category ? { category } : {};
+    
+    const rawGalleryItems = await GalleryItem.find(filter).sort({ order: 1 }).lean();
+    galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
 
-  // Extract unique categories
-  const allItems = await GalleryItem.find().select('category').lean();
-  const categories = Array.from(new Set(allItems.map((i: any) => i.category).filter(Boolean)));
+    const allItems = await GalleryItem.find().select('category').lean();
+    categories = Array.from(new Set(allItems.map((i: any) => i.category).filter(Boolean))) as string[];
+  } catch (error) {
+    console.error('Database error in GalleryPage:', error);
+  }
 
   return (
     <>

@@ -18,24 +18,30 @@ import { ProjectsCarousel } from '@/components/website/ProjectsCarousel';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  await connectDB();
-  const rawFeaturedProjects = await Project.find({ featured: true })
-    .sort({ createdAt: -1 })
-    .limit(10)
-    .lean();
+  let featuredProjects: any[] = [];
+  let galleryItems: any[] = [];
 
-  const featuredProjects = rawFeaturedProjects.map((p: any) => ({
-    ...p,
-    id: p._id.toString()
-  }));
+  try {
+    await connectDB();
+    const rawFeaturedProjects = await Project.find({ featured: true })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
 
-  // Fetch gallery images from DB
-  const rawGalleryItems = await GalleryItem.find()
-    .sort({ order: 1 })
-    .limit(12)
-    .lean();
-    
-  const galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
+    featuredProjects = rawFeaturedProjects.map((p: any) => ({
+      ...p,
+      id: p._id.toString()
+    }));
+
+    const rawGalleryItems = await GalleryItem.find()
+      .sort({ order: 1 })
+      .limit(12)
+      .lean();
+      
+    galleryItems = rawGalleryItems.map((i: any) => ({ ...i, id: i._id.toString() }));
+  } catch (error) {
+    console.error('Database error in HomePage:', error);
+  }
 
   return (
     <>

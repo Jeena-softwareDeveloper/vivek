@@ -15,9 +15,23 @@ export async function connectDB(): Promise<typeof mongoose> {
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
+    }).catch(async (err) => {
+      console.warn('Primary MongoDB connection failed, trying local fallback:', err.message);
+      // Fallback to local MongoDB instance
+      return mongoose.connect('mongodb://127.0.0.1:27017/construction', {
+        bufferCommands: false,
+        serverSelectionTimeoutMS: 3000,
+      });
     });
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (err) {
+    cached.promise = null;
+    throw err;
+  }
+
   return cached.conn;
 }

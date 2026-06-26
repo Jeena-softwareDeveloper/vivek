@@ -15,32 +15,37 @@ export default async function ProjectsPortfolioPage({
 }) {
   const { category } = await searchParams;
 
-  await connectDB();
-  const filter = category ? { category } : {};
-  
-  const rawProjects = await Project.find(filter).sort({ createdAt: -1 }).lean();
+  let projects: any[] = [];
+  let categories: string[] = [];
+  let heroImages: string[] = [];
 
-  const projects = rawProjects.map((p: any) => ({
-    ...p,
-    id: p._id.toString()
-  }));
+  try {
+    await connectDB();
+    const filter = category ? { category } : {};
+    
+    const rawProjects = await Project.find(filter).sort({ createdAt: -1 }).lean();
+    projects = rawProjects.map((p: any) => ({
+      ...p,
+      id: p._id.toString()
+    }));
 
-  // Extract unique categories for filter (in real app, query DB distinct)
-  const allProjects = await Project.find().select('category').lean();
-  const categories = Array.from(new Set(allProjects.map((p: any) => p.category).filter(Boolean)));
+    const allProjects = await Project.find().select('category').lean();
+    categories = Array.from(new Set(allProjects.map((p: any) => p.category).filter(Boolean))) as string[];
 
-  // Fetch featured projects for the hero background slider
-  const featuredProjects = await Project.find({ featured: true })
-    .select('coverImage images createdAt')
-    .sort({ createdAt: -1 })
-    .lean();
+    const featuredProjects = await Project.find({ featured: true })
+      .select('coverImage images createdAt')
+      .sort({ createdAt: -1 })
+      .lean();
 
-  const heroImages = featuredProjects
-    .map((p: any) => {
-      const parsedImages = (typeof p.images === 'string' && p.images.startsWith('[')) ? JSON.parse(p.images) : (p.images ? [p.images] : []);
-      return p.coverImage || (parsedImages.length > 0 ? parsedImages[0] : null);
-    })
-    .filter(Boolean) as string[];
+    heroImages = featuredProjects
+      .map((p: any) => {
+        const parsedImages = (typeof p.images === 'string' && p.images.startsWith('[')) ? JSON.parse(p.images) : (p.images ? [p.images] : []);
+        return p.coverImage || (parsedImages.length > 0 ? parsedImages[0] : null);
+      })
+      .filter(Boolean) as string[];
+  } catch (error) {
+    console.error('Database error in ProjectsPage:', error);
+  }
 
   return (
     <>

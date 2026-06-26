@@ -45,8 +45,7 @@ export function Hero() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(t);
+    setMounted(true);
   }, []);
 
   const handleNext = () => {
@@ -142,6 +141,9 @@ export function Hero() {
                   src={item.src}
                   muted
                   playsInline
+                  autoPlay={index === 0}
+                  preload={index === 0 ? "auto" : "metadata"}
+                  poster={index === 0 ? "/images/video%20imatge%20for%20hero%20seciton.png" : index === 1 ? "/images/kolathur_angadi.png" : undefined}
                   onEnded={isActive ? handleNext : undefined}
                   onTimeUpdate={(e) => {
                     if (isActive) {

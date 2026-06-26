@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${mulish.variable}`}>
+      <head>
+        <link rel="preload" as="image" href="/images/video%20imatge%20for%20hero%20seciton.png" />
+      </head>
       <body>{children}</body>
     </html>
   );

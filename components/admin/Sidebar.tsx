@@ -13,7 +13,8 @@ import {
   Mail,
   Tag,
   Settings,
-  LogOut
+  LogOut,
+  Briefcase
 } from 'lucide-react';
 
 const navItems = [
@@ -22,6 +23,7 @@ const navItems = [
   { href: '/dashboard/services', label: 'Services', icon: Wrench },
   { href: '/dashboard/gallery', label: 'Gallery', icon: ImageIcon },
   { href: '/dashboard/categories', label: 'Categories', icon: Tag },
+  { href: '/dashboard/careers', label: 'Careers', icon: Briefcase },
 ];
 
 export function Sidebar({ 

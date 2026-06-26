@@ -27,6 +27,7 @@ export function TopBar({ onToggleSidebar }: { onToggleSidebar?: () => void }) {
     if (pathname.includes('/categories')) return { title: 'Categories', desc: 'Manage options for project and gallery types.', action: { label: 'Add Category', href: '?action=add-category' } };
     if (pathname.includes('/testimonials')) return { title: 'Testimonials', desc: 'Manage client testimonials.', action: { label: 'Add Testimonial', href: '?action=add-testimonial' } };
     if (pathname.includes('/team')) return { title: 'Team', desc: 'Manage your team members.', action: { label: 'Add Member', href: '?action=add-member' } };
+    if (pathname.includes('/careers')) return { title: 'Careers', desc: 'Manage job postings and career opportunities.', action: { label: 'Add Job', href: '?action=add-job' } };
     if (pathname.includes('/enquiries')) return { title: 'Enquiries', desc: 'Manage customer enquiries.' };
     if (pathname.includes('/settings')) return { title: 'Settings', desc: 'Manage your website settings.' };
     

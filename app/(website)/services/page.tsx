@@ -13,9 +13,14 @@ export const metadata = {
 };
 
 export default async function ServicesPage() {
-  await connectDB();
-  const rawServices = await Service.find().sort({ order: 1 }).lean();
-  const services = rawServices.map((s: any) => ({ ...s, id: s._id.toString() }));
+  let services: any[] = [];
+  try {
+    await connectDB();
+    const rawServices = await Service.find().sort({ order: 1 }).lean();
+    services = rawServices.map((s: any) => ({ ...s, id: s._id.toString() }));
+  } catch (error) {
+    console.error('Database error in ServicesPage:', error);
+  }
 
   return (
     <>
