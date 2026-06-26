@@ -15,9 +15,9 @@ export default function ContactPage() {
         {/* Background Layers */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/images/contact_hero_bg.png" 
+            src="/images/man_wrtiong.png" 
             alt="Contact background" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_30%]"
           />
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/80 via-transparent to-transparent"></div>
