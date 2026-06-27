@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 
@@ -126,7 +127,7 @@ export function ContactForm() {
           className="mt-1 w-4.5 h-4.5 rounded border-slate-300 text-[#0a42a8] focus:ring-[#0a42a8] cursor-pointer accent-[#0a42a8]"
         />
         <label htmlFor="privacyConsent" className="text-sm text-slate-600 cursor-pointer select-none leading-relaxed">
-          I have read and agree to the <a href="/privacy-policy" target="_blank" className="text-[#0a42a8] font-bold underline hover:text-[#083382]">Privacy Policy</a> and authorize Vivek Vijay &amp; Co. to contact me regarding my enquiry.
+          I have read and agree to the <Link href="/privacy-policy" className="text-[#0a42a8] font-bold underline hover:text-[#083382]">Privacy Policy</Link> and authorize Vivek Vijay &amp; Co. to contact me regarding my enquiry.
         </label>
       </div>
 
